@@ -6,19 +6,28 @@ const { isUserAuthenticate } = require('../middlewares/auth')
 const router = express.Router()
 
 router.get('/', (req, res) => {
+  console.log('HOST: ', req.headers.origin)
   res.status(200).json({ message: 'Everything is ok!' })
 })
 
-router.get(
-  '/login',
-  passport.authenticate('auth0', {
-    scope: 'openid email profile',
-    failureMessage: 'Cannot login, try again',
-    failureRedirect: 'http://localhost:3000/login/error',
-    successRedirect: 'http://localhost:3000/login/success',
-    successReturnToOrRedirect: 'http://localhost:3000/login/success',
-  })
-)
+// router.get(
+//   '/login',
+//   passport.authenticate('auth0', {
+//     scope: 'openid email profile',
+//     failureMessage: 'Cannot login, try again',
+//     failureRedirect: 'http://localhost:3000/login/error',
+//     successRedirect: 'http://localhost:3000/login/success',
+//     successReturnToOrRedirect: 'http://localhost:3000/login/success',
+//   })
+// )
+
+router.get('/login', (req, res, next) => {
+        const returnTo = req.headers.origin
+        const state = returnTo
+            ? Buffer.from(JSON.stringify({ returnTo })).toString('base64') : undefined
+        const authenticator = passport.authenticate('auth0', { scope: 'openid email profile', state })
+        authenticator(req, res, next)
+})
 
 router.get(
   '/callback',
@@ -41,21 +50,12 @@ router.get(
 
 router.get('/logout', (req, res) => {
   req.logOut(() => {
-    let returnTo = req.protocol + '://' + req.hostname
-    const port = req.connection.localPort
-
-    if (port !== undefined && port !== 80 && port !== 443) {
-      returnTo =
-        process.env.NODE_ENV === 'production'
-          ? `${returnTo}/`
-          : `${returnTo}:${port}/`
-    }
+    const { returnTo } = req.query
 
     const logoutURL = new URL(`https://${process.env.AUTH0_DOMAIN}/v2/logout`)
-
     const searchString = querystring.stringify({
       client_id: process.env.AUTH0_CLIENT_ID,
-      returnTo: 'http://localhost:3000',
+      returnTo
     })
     logoutURL.search = searchString
 

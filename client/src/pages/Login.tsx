@@ -7,7 +7,9 @@ const Login = (props: any) => {
     try {
       const response: any = await axios.get(
         'http://localhost:8000/api/v1/auth/user',
-        { withCredentials: true }
+        {
+          withCredentials: true,
+        }
       )
       console.log('response', response)
       if (response && response.data) {
@@ -38,7 +40,9 @@ const Login = (props: any) => {
   }
 
   const logout = () => {
-    window.open('http://localhost:8000/api/v1/logout')
+    window.open(
+      `http://localhost:8000/api/v1/logout?returnTo=${window.location.origin}`
+    )
   }
 
   const loginCallback = async () => {

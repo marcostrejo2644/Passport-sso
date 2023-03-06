@@ -2,7 +2,6 @@ import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
 export const Home = (props: any) => {
-
   return (
     <Fragment>
       <h1>Testing SSO</h1>

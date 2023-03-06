@@ -36,6 +36,14 @@ const App: React.FC = () => {
     console.log('user from state', user)
   }, [])
 
+  const testHost = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/')
+      console.log('response: ', response)
+    } catch (error) {
+      console.log('error testHOst')
+    }
+  }
   return (
     <>
       <BrowserRouter>
@@ -48,6 +56,7 @@ const App: React.FC = () => {
           <Route path="/login/success" element={<LoginSuccess />} />
         </Routes>
       </BrowserRouter>
+      <button onClick={testHost}>TEST HOST</button>
       <button
         onClick={() => {
           setUser({

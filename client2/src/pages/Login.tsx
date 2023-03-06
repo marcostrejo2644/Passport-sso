@@ -38,7 +38,10 @@ const Login = (props: any) => {
   }
 
   const logout = () => {
-    window.open('http://localhost:8000/api/v1/logout')
+    console.log('origin', window.location.origin)
+    window.open(
+      `http://localhost:8000/api/v1/logout?returnTo=${window.location.origin}`
+    )
   }
 
   const loginCallback = async () => {
