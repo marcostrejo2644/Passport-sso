@@ -1,13 +1,12 @@
-import React, { Fragment } from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react'
 
-export const Home = (props: any) => {
+const Home: React.FC = () => {
   return (
-    <Fragment>
-      <h1>Testing SSO</h1>
-      <p>This is a test for Loggin SSO with auth0</p>
-      <button onClick={props.testAuth}>Loggin</button>
-      <Link to="/login">Go Login</Link>
-    </Fragment>
+    <>
+      <h2>Welcome to My Project </h2>
+      <p>This is a test for Login with SSO and Auth0</p>
+    </>
   )
 }
+
+export default Home

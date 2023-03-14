@@ -10,42 +10,52 @@ router.get('/', (req, res) => {
   res.status(200).json({ message: 'Everything is ok!' })
 })
 
-// router.get(
-//   '/login',
-//   passport.authenticate('auth0', {
-//     scope: 'openid email profile',
-//     failureMessage: 'Cannot login, try again',
-//     failureRedirect: 'http://localhost:3000/login/error',
-//     successRedirect: 'http://localhost:3000/login/success',
-//     successReturnToOrRedirect: 'http://localhost:3000/login/success',
-//   })
-// )
+router.get(
+ '/login',
+ passport.authenticate('auth0', {
+   scope: 'openid email profile',
+   failureMessage: 'Cannot login, try again',
+   failureRedirect: 'http://localhost:3000/login/error',
+   successRedirect: 'http://localhost:3000/login/success',
+   successReturnToOrRedirect: 'http://localhost:3000/login/success',
+ })
+)
 
-router.get('/login', (req, res, next) => {
-        const returnTo = req.headers.origin
-        const state = returnTo
-            ? Buffer.from(JSON.stringify({ returnTo })).toString('base64') : undefined
-        const authenticator = passport.authenticate('auth0', { scope: 'openid email profile', state })
-        authenticator(req, res, next)
-})
+/* router.get( */
+/*   '/callback', */
+/*   async (req, res) => { */
+/*     try { */
+/*       const authenticator = passport.authenticate('auth0', { */
+/*         scope: 'openid email profile', */
+/*         failureMessage: 'Cannot login, try again', */
+/*         failureRedirect: 'http://localhost:3000/login/error', */
+/*         successRedirect: 'http://localhost:3000/login/success', */
+/*         successReturnToOrRedirect: 'http://localhost:3000/login/success', */
+/*       }) */
+/*       authenticator(req, res) */
+/*     } catch (error) { */
+/*       console.log('error Callback', error) */
+/*     } */
+/*   } */
+/* ) */
+
 
 router.get(
-  '/callback',
-  passport.authenticate('auth0', {
-    scope: 'openid email profile',
-    failureMessage: 'Cannot login, try again',
-    failureRedirect: 'http://localhost:3000/login/error',
-    successRedirect: 'http://localhost:3000/login/success',
-    successReturnToOrRedirect: 'http://localhost:3000/login/success',
-  }),
-  async (req, res) => {
-    try {
-      console.log('USER: ', req.user)
-      res.status(204).json({ message: 'Login succesfully' })
-    } catch (error) {
-      console.log('error Callback', error)
-    }
-  }
+ '/callback',
+ passport.authenticate('auth0', {
+   scope: 'openid email profile',
+   failureMessage: 'Cannot login, try again',
+   failureRedirect: 'http://localhost:3000/login/error',
+   successRedirect: 'http://localhost:3000/login/success',
+   successReturnToOrRedirect: 'http://localhost:3000/login/success',
+ }),
+ async (req, res) => {
+   try {
+     res.status(204).json({ message: 'Login succesfully', user: req.user })
+   } catch (error) {
+     console.log('error Callback', error)
+   }
+ }
 )
 
 router.get('/logout', (req, res) => {
@@ -63,14 +73,14 @@ router.get('/logout', (req, res) => {
   })
 })
 
-router.get('/testLogin', isUserAuthenticate, (req,res) => {
-  console.log('req user from testLogin', req.user)
-  res.status(200).json({message: "you are authenticate"})
+router.get('/isAuthAndGetUser', isUserAuthenticate, (req, res) => {
+  // console.log('req user from testLogin', req.user)
+  res.status(200).json({ message: "you are authenticate", user: req.user })
 })
 
-router.post('/isAuth', isUserAuthenticate, (req,res) => {
-  console.log('req user from testLogin', req.user)
-  res.status(200).json({message: "you are authenticate"})
+router.post('/isAuth', isUserAuthenticate, (req, res) => {
+  // console.log('req user from testLogin', req.user)
+  res.status(200).json({ message: "you are authenticate" })
 })
 
 // From web app example

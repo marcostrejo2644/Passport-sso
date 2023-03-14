@@ -6,6 +6,14 @@
       "dom.iterable",
       "esnext"
     ],
+    "baseUrl": "src",
+    "paths": {
+      "components/*": ["components/*"],
+      "context/*": ["context/*"],
+      "config/*": ["config/*"],
+      "pages/*": ["pages/*"],
+      "utils/*": ["utils/*"]
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -22,6 +30,7 @@
     "allowUnusedLabels": false
   },
   "include": [
-    "src"
-  ]
+    "src/*"
+  ],
+  "exclude": ["node_modules"]
 }

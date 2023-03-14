@@ -16,8 +16,9 @@ passport.use(
       callbackURL: process.env.AUTH0_CALLBACK_URL,
       profileFields: ['email'],
       state: true,
+      passReqToCallback: true
     },
-    async function (accessToken, refreshToken, extraParams, profile, cb) {
+    async function (req, accessToken, refreshToken, extraParams, profile, cb) {
       try {
         const user = {
           email: profile.emails[0].value,

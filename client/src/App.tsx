@@ -1,54 +1,41 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import axios from 'axios'
-import { Home } from './pages/Home'
-import Login from './pages/Login'
-import LoginSuccess from './pages/LoginSuccess'
-import { UserContext } from './context/userProvider'
+
+import Navbar from 'components/Navbar'
+import Home from 'pages/Home'
+import Login from 'pages/Login'
+import LoginSuccess from 'pages/LoginSuccess'
+import { UserContext } from 'context/userProvider'
+import API from 'utils/API'
+
 const App: React.FC = () => {
-  // const [user, setUser] = useState({})
-
   const [user, setUser] = useContext(UserContext)
-  useEffect(() => {
-    console.log('user', user)
-  }, [user])
 
-  // console.log('userFromContext', user)
   const testAuth = async () => {
     try {
-      const response: any = await axios.get(
-        'http://localhost:8000/api/v1/testLogin',
-        {
-          data: {
-            user: user,
-          },
-          withCredentials: true,
-        }
-      )
-      console.log('Response login callback', response)
+      const response: any = await API.isAuthAndGetUser()
+      console.log('response', response)
+      if (response.data && response.data.user) setUser(response.data.user)
     } catch (error) {
       console.log('Error Login Callback', error)
     }
   }
+  const logout = () => {
+    window.open(
+      `http://localhost:8000/api/v1/logout?returnTo=${window.location.origin}`
+    )
+  }
 
   useEffect(() => {
     testAuth()
-    console.log('user from state', user)
   }, [])
 
-  const testHost = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/v1/')
-      console.log('response: ', response)
-    } catch (error) {
-      console.log('error testHOst')
-    }
-  }
   return (
     <>
+      <Navbar user={user} />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home testAuth={testAuth} />} />
+          <Route path="/" element={<Home />} />
           <Route
             path="/login"
             element={<Login setUser={setUser} user={user} />}
@@ -56,25 +43,11 @@ const App: React.FC = () => {
           <Route path="/login/success" element={<LoginSuccess />} />
         </Routes>
       </BrowserRouter>
-      <button onClick={testHost}>TEST HOST</button>
-      <button
-        onClick={() => {
-          setUser({
-            isAuth: true,
-            user: user.user,
-          })
-        }}
-      >
-        changeState
+      <button style={{ padding: '4rem' }} onClick={logout}>
+        Logout
       </button>
     </>
   )
 }
-// <Route path="/login">
-//   <button>Login</button>
-// </Route>
-// <Route path="/login/error">
-//   Login error. Please try again later!
-// </Route>
 
 export default App

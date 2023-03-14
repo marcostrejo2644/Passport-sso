@@ -1,12 +1,12 @@
 import React, { useState, createContext, ReactNode } from 'react'
 
-type IUser = {
+export type IUser = {
   isAuth: boolean
   user: {
     id: string
     username: string
-    profilePicture: string
     email: string
+    profilePicture: string
   }
 }
 
@@ -16,20 +16,18 @@ const userDefault: IUser = {
   isAuth: false,
   user: {
     id: '',
-    email: '',
     username: '',
+    email: '',
     profilePicture: '',
   },
 }
-
 export const UserContext = createContext<IUserContext>([
   userDefault,
   () => null,
 ])
 
 export const UserProvider: React.FC<ReactNode> = ({ children }) => {
-  const [user, setUser] = useState(userDefault)
-  console.log('userProvider', user)
+  const [user, setUser] = useState<IUser>(userDefault)
   return (
     <UserContext.Provider value={[user, setUser]}>
       {children}

@@ -4,40 +4,18 @@ import { Link } from 'react-router-dom'
 
 const Login = (props: any) => {
   const fetchAuthUser = async () => {
-    try {
-      const response: any = await axios.get(
-        'http://localhost:8000/api/v1/auth/user',
-        {
-          withCredentials: true,
-        }
-      )
-      console.log('response', response)
-      if (response && response.data) {
-        console.log('User', response.data)
-        props.setUser(response.data)
-      }
-    } catch (error) {
-      console.log('error fetchAuthUser', error)
-    }
+    /* try { */
+    /*   const response: any =  */
+    /*   console.log('response', response) */
+    /*   if (response && response.data) { */
+    /*     console.log('User', response.data) */
+    /*     props.setUser(response.data) */
+    /*   } */
+    /* } catch (error) { */
+    /*   console.log('error fetchAuthUser', error) */
+    /* } */
   }
 
-  const redirectSSO = async () => {
-    let timer: NodeJS.Timeout | null = null
-    const newWindow = window.open(
-      'http://localhost:8000/api/v1/login',
-      '_blank',
-      'width=600, height=700'
-    )
-    if (newWindow) {
-      timer = setInterval(() => {
-        if (newWindow.closed) {
-          console.log("Yay we're authenticate", props.user)
-          fetchAuthUser()
-          if (timer) clearInterval(timer)
-        }
-      }, 500)
-    }
-  }
 
   const logout = () => {
     window.open(
@@ -81,7 +59,6 @@ const Login = (props: any) => {
 
   return (
     <>
-      <button onClick={redirectSSO}>Sign in</button>
       <button onClick={loginCallback}>Log in</button>
       <button onClick={logout}>Logout</button>
       <button onClick={testLogin}>TESTING</button>

@@ -21,10 +21,17 @@ const Login = (props: any) => {
 
   const redirectSSO = async () => {
     let timer: NodeJS.Timeout | null = null
+    console.log(
+      'window',
+      `http://localhost:8000/api/v1/login?returnTo=${encodeURIComponent(
+        window.location.origin
+      )}/`
+    )
     const newWindow = window.open(
-      'http://localhost:8000/api/v1/login',
-      '_blank',
-      'width=600, height=700'
+      `http://localhost:8000/api/v1/login?returnTo=${encodeURIComponent(
+        window.location.origin
+      )}`,
+      '_self'
     )
     if (newWindow) {
       timer = setInterval(() => {
@@ -40,7 +47,8 @@ const Login = (props: any) => {
   const logout = () => {
     console.log('origin', window.location.origin)
     window.open(
-      `http://localhost:8000/api/v1/logout?returnTo=${window.location.origin}`
+      `http://localhost:8000/api/v1/logout?returnTo=${window.location.origin}`,
+      '_self'
     )
   }
 
