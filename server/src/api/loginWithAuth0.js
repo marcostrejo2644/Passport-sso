@@ -17,7 +17,7 @@ router.get(
    failureMessage: 'Cannot login, try again',
    failureRedirect: 'http://localhost:3000/login/error',
    successRedirect: 'http://localhost:3000/login/success',
-   successReturnToOrRedirect: 'http://localhost:3000/login/success',
+   successReturnToOrRedirect: 'http://localhost:3000/login/success'
  })
 )
 

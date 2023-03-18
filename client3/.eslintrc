@@ -1,0 +1,27 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": ["plugin:prettier/recommended", "plugin:react/recommended", "plugin:import/react"],
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "prettier/prettier": ["warn"],
+    "react/jsx-fragments": "off",
+    "@typescript-eslint/object-curly-spacing": "off",
+    "react/jsx-filename-extension": [0],
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-unused-vars": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "ecmaVersion": 12,
+        "project": ["./tsconfig.json"]
+      }
+    }
+  ]
+}

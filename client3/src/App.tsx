@@ -32,15 +32,9 @@ const App: React.FC = () => {
     }
   }
 
-  const logout = () => {
-    window.open(
-      `http://localhost:8000/api/v1/logout?returnTo=${window.location.origin}`
-    )
-  }
-
   useEffect(() => {
     testAuth()
-  }, [])
+  }, [user])
 
   return (
     <>
@@ -55,9 +49,6 @@ const App: React.FC = () => {
           <Route path="/login/success" element={<LoginSuccess />} />
         </Routes>
       </BrowserRouter>
-      <button style={{ padding: '4rem' }} onClick={logout}>
-        Logout
-      </button>
     </>
   )
 }
