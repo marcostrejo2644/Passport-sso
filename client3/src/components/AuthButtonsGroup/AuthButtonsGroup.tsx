@@ -4,6 +4,7 @@ import config from 'config/config'
 
 const AuthButtonsGroup: React.FC = () => {
   const redirectLoginView = () => {
+    console.log('config.login', config.login)
     window.open(config.login, '_blank', 'height=800, width=600')
   }
 

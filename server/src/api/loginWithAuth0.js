@@ -12,56 +12,88 @@ router.get('/', (req, res) => {
 
 router.get(
  '/login',
- passport.authenticate('auth0', {
-   scope: 'openid email profile',
-   failureMessage: 'Cannot login, try again',
-   failureRedirect: 'http://localhost:3000/login/error',
-   successRedirect: 'http://localhost:3000/login/success',
-   successReturnToOrRedirect: 'http://localhost:3000/login/success'
- })
+  async (req, res) => {
+    try {
+      const { returnTo } = req.query
+      console.log('LOGIN URL: returnTo', returnTo)
+      const authenticator = passport.authenticate('auth0', {
+        scope: 'openid email profile',
+        failureMessage: 'Cannot login, try again',
+        failureRedirect: 'http://localhost:3000/login/error',
+        successRedirect: 'http://localhost:3000/login/success',
+        successReturnToOrRedirect: 'http://localhost:3000/login/success',
+        passReqToCallback: true
+      })
+      authenticator(req, res)
+    } catch (error) {
+      console.log('error Callback', error)
+    }
+  }
 )
 
-/* router.get( */
-/*   '/callback', */
-/*   async (req, res) => { */
-/*     try { */
-/*       const authenticator = passport.authenticate('auth0', { */
-/*         scope: 'openid email profile', */
-/*         failureMessage: 'Cannot login, try again', */
-/*         failureRedirect: 'http://localhost:3000/login/error', */
-/*         successRedirect: 'http://localhost:3000/login/success', */
-/*         successReturnToOrRedirect: 'http://localhost:3000/login/success', */
-/*       }) */
-/*       authenticator(req, res) */
-/*     } catch (error) { */
-/*       console.log('error Callback', error) */
-/*     } */
-/*   } */
-/* ) */
-
+router.get(
+ '/login',
+  async (req, res) => {
+    try {
+      const { returnTo } = req.query
+      console.log('LOGIN URL: returnTo', returnTo)
+      req.returnTo = returnTo
+      const authenticator = passport.authenticate('auth0', {
+        scope: 'openid email profile',
+        failureMessage: 'Cannot login, try again',
+        failureRedirect: 'http://localhost:3000/login/error',
+        successRedirect: 'http://localhost:3000/login/success',
+        successReturnToOrRedirect: 'http://localhost:3000/login/success',
+        passReqToCallback: true
+      })
+      authenticator(req, res)
+    } catch (error) {
+      console.log('error Callback', error)
+    }
+  }
+)
 
 router.get(
  '/callback',
- passport.authenticate('auth0', {
-   scope: 'openid email profile',
-   failureMessage: 'Cannot login, try again',
-   failureRedirect: 'http://localhost:3000/login/error',
-   successRedirect: 'http://localhost:3000/login/success',
-   successReturnToOrRedirect: 'http://localhost:3000/login/success',
- }),
- async (req, res) => {
-   try {
-     res.status(204).json({ message: 'Login succesfully', user: req.user })
-   } catch (error) {
-     console.log('error Callback', error)
-   }
- }
+  async (req, res) => {
+    try {
+      /* const { returnTo } = req.query */
+      console.log('CALLBACK URL: returnTo', req.query)
+      const authenticator = passport.authenticate('auth0', {
+        scope: 'openid email profile',
+        failureMessage: 'Cannot login, try again',
+        failureRedirect: 'http://localhost:3000/login/error',
+        successRedirect: 'http://localhost:3000/login/success',
+        successReturnToOrRedirect: 'http://localhost:3000/login/success',
+      })
+      authenticator(req, res)
+    } catch (error) {
+      console.log('error Callback', error)
+    }
+  }
 )
+
+/* router.get( */
+/*  '/callback', */
+/*  passport.authenticate('auth0', { */
+/*    scope: 'openid email profile', */
+/*    failureMessage: 'Cannot login, try again', */
+/*    failureRedirect: 'http://localhost:3000/login/error', */
+/*    successRedirect: 'http://localhost:3000/login/success', */
+/*    successReturnToOrRedirect: 'http://localhost:3000/login/success', */
+/*  }), */
+/*  async (req, res) => { */
+/*    try { */
+/*      res.status(204).json({ message: 'Login succesfully', user: req.user }) */
+/*    } catch (error) { */
+/*      console.log('error Callback', error) */
+/*    } */
+/*  } */
+/* ) */
 
 router.get('/logout', (req, res) => {
   req.logOut(() => {
     const { returnTo } = req.query
-
     const logoutURL = new URL(`https://${process.env.AUTH0_DOMAIN}/v2/logout`)
     const searchString = querystring.stringify({
       client_id: process.env.AUTH0_CLIENT_ID,

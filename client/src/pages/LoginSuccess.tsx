@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 
 const LoginSuccess: React.FC = () => {
   useEffect(() => {
+    console.log('closing window')
     setTimeout(() => {
       window.close()
     }, 2000)

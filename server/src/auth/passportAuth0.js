@@ -20,6 +20,7 @@ passport.use(
     },
     async function (req, accessToken, refreshToken, extraParams, profile, cb) {
       try {
+        console.log('AUTH FOLDER: req', req.returnTo)
         const user = {
           email: profile.emails[0].value,
           username: profile.nickname,

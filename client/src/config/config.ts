@@ -1,7 +1,7 @@
 const backendUrl = `${process.env.REACT_APP_BACKENDURL}/api/v1`
 
 export default {
-  login: `${backendUrl}/login`,
-  isAuthAndGetUser: `${backendUrl}/isAuthAndGetUser`,
-  logout: `${backendUrl}/logout?returnTo=${window.location.origin}`,
+  login: `${backendUrl}/auth/login?returnTo=${window.location.origin}`,
+  isAuthAndGetUser: `${backendUrl}/auth/isAuthAndGetUser`,
+  logout: `${backendUrl}/auth/logout?returnTo=${window.location.origin}`,
 }
