@@ -7,6 +7,28 @@ const User = require('../models/user')
 
 require('dotenv').config()
 
+Auth0Strategy.prototype.authorizationParams = function (options) {
+    var options = options || {};
+
+    var params = {};
+    if (options.connection && typeof options.connection === 'string') {
+        params.connection = options.connection;
+    }
+    if (options.audience && typeof options.audience === 'string') {
+        params.audience = options.audience;
+    }
+    if (options.prompt && typeof options.prompt === 'string') {
+        params.prompt = options.prompt;
+    }
+
+    // *** This is the option for setting the signup screen as the start screen ***
+    if (options.initialScreen && typeof options.initialScreen === 'string') {
+        params.initial_screen = options.initialScreen;
+    }
+
+    return params;
+}
+
 passport.use(
   new Auth0Strategy(
     {

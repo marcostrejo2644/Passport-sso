@@ -21,23 +21,24 @@ router.get(
  })
 )
 
-/* router.get( */
-/*   '/callback', */
-/*   async (req, res) => { */
-/*     try { */
-/*       const authenticator = passport.authenticate('auth0', { */
-/*         scope: 'openid email profile', */
-/*         failureMessage: 'Cannot login, try again', */
-/*         failureRedirect: 'http://localhost:3000/login/error', */
-/*         successRedirect: 'http://localhost:3000/login/success', */
-/*         successReturnToOrRedirect: 'http://localhost:3000/login/success', */
-/*       }) */
-/*       authenticator(req, res) */
-/*     } catch (error) { */
-/*       console.log('error Callback', error) */
-/*     } */
-/*   } */
-/* ) */
+router.get(
+  '/signup',
+  async (req, res) => {
+    try {
+      const authenticator = passport.authenticate('auth0', {
+        scope: 'openid email profile',
+        failureMessage: 'Cannot login, try again',
+        failureRedirect: 'http://localhost:3000/login/error',
+        successRedirect: 'http://localhost:3000/login/success',
+        successReturnToOrRedirect: 'http://localhost:3000/login/success',
+        initialScreen: 'signUp'
+      })
+      authenticator(req, res)
+    } catch (error) {
+      console.log('error Callback', error)
+    }
+  }
+)
 
 
 router.get(

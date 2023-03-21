@@ -7,6 +7,10 @@ const AuthButtonsGroup: React.FC = () => {
     window.open(config.login, '_blank', 'height=800, width=600')
   }
 
+  const redirectSignupView = () => {
+    window.open(config.signup, '_blank', 'height=800, width=600')
+  }
+
   return (
     <div>
       <button
@@ -19,7 +23,7 @@ const AuthButtonsGroup: React.FC = () => {
       <button
         type="button"
         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        onClick={redirectLoginView}
+        onClick={redirectSignupView}
       >
         Signin
       </button>
