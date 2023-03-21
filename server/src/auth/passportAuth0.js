@@ -1,32 +1,23 @@
-const { deserializeUser } = require('passport')
 const passport = require('passport')
 const Auth0Strategy = require('passport-auth0')
-const bcrypt = require('bcrypt')
 
 const User = require('../models/user')
 
 require('dotenv').config()
 
 Auth0Strategy.prototype.authorizationParams = function (options) {
-    var options = options || {};
+  var options = options || {};
+  var params = Object.assign({}, options);
 
-    var params = {};
-    if (options.connection && typeof options.connection === 'string') {
-        params.connection = options.connection;
-    }
-    if (options.audience && typeof options.audience === 'string') {
-        params.audience = options.audience;
-    }
-    if (options.prompt && typeof options.prompt === 'string') {
-        params.prompt = options.prompt;
-    }
+  if (this.authParams && typeof this.authParams.nonce === 'string') {
+    params.nonce = this.authParams.nonce;
+  }
 
-    // *** This is the option for setting the signup screen as the start screen ***
-    if (options.initialScreen && typeof options.initialScreen === 'string') {
-        params.initial_screen = options.initialScreen;
-    }
+  if (options.initialScreen && typeof options.initialScreen === 'string') {
+      params.initial_screen = options.initialScreen;
+  }
 
-    return params;
+  return params;
 }
 
 passport.use(
@@ -42,32 +33,33 @@ passport.use(
     },
     async function (req, accessToken, refreshToken, extraParams, profile, cb) {
       try {
-        const user = {
-          email: profile.emails[0].value,
-          username: profile.nickname,
-          profilePicture: profile.picture || '',
-          description: '',
-          gamesLibrary: [],
-          gamesCreated: [],
-          isDeveloper: false,
-          customURL: '',
-          thirdParty: profile.user_id,
-          password: profile.password || '',
-          updateDate: new Date(),
-        }
-
-        const userFind = await User.findOne({
-          email: user.email,
-        })
-        if (userFind) {
-          // console.log('userFind', userFind)
-          cb(null, userFind)
-        } else {
-          // console.log('saving user', user)
-          const userMongo = new User(user)
-          userMongo.save(user)
-          return cb(null, userMongo)
-        }
+        cb(null, profile)
+      /*   const user = { */
+      /*     email: profile.emails[0].value, */
+      /*     username: profile.nickname, */
+      /*     profilePicture: profile.picture || '', */
+      /*     description: '', */
+      /*     gamesLibrary: [], */
+      /*     gamesCreated: [], */
+      /*     isDeveloper: false, */
+      /*     customURL: '', */
+      /*     thirdParty: profile.user_id, */
+      /*     password: profile.password || '', */
+      /*     updateDate: new Date(), */
+      /*   } */
+      /**/
+      /*   const userFind = await User.findOne({ */
+      /*     email: user.email, */
+      /*   }) */
+      /*   if (userFind) { */
+      /*     // console.log('userFind', userFind) */
+      /*     cb(null, userFind) */
+      /*   } else { */
+      /*     // console.log('saving user', user) */
+      /*     const userMongo = new User(user) */
+      /*     userMongo.save(user) */
+      /*     return cb(null, userMongo) */
+      /*   } */
       } catch (error) {
         cb(error, null)
       }

@@ -1,7 +1,7 @@
 const express = require('express')
 const passport = require('passport')
 const querystring = require('querystring')
-const { isUserAuthenticate } = require('../middlewares/auth')
+const { isAuthenticated } = require('../middlewares/auth')
 
 const router = express.Router()
 
@@ -17,7 +17,8 @@ router.get(
    failureMessage: 'Cannot login, try again',
    failureRedirect: 'http://localhost:3000/login/error',
    successRedirect: 'http://localhost:3000/login/success',
-   successReturnToOrRedirect: 'http://localhost:3000/login/success'
+   successReturnToOrRedirect: 'http://localhost:3000/login/success',
+   initialScreen: 'login'
  })
 )
 
@@ -49,6 +50,7 @@ router.get(
    failureRedirect: 'http://localhost:3000/login/error',
    successRedirect: 'http://localhost:3000/login/success',
    successReturnToOrRedirect: 'http://localhost:3000/login/success',
+   initialScreen: 'login'
  }),
  async (req, res) => {
    try {
@@ -74,12 +76,12 @@ router.get('/logout', (req, res) => {
   })
 })
 
-router.get('/isAuthAndGetUser', isUserAuthenticate, (req, res) => {
+router.get('/isAuthAndGetUser', isAuthenticated, (req, res) => {
   // console.log('req user from testLogin', req.user)
   res.status(200).json({ message: "you are authenticate", user: req.user })
 })
 
-router.post('/isAuth', isUserAuthenticate, (req, res) => {
+router.post('/isAuth', isAuthenticated, (req, res) => {
   // console.log('req user from testLogin', req.user)
   res.status(200).json({ message: "you are authenticate" })
 })

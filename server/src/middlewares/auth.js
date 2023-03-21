@@ -1,7 +1,6 @@
-module.exports.isUserAuthenticate = (req, res, next) => {
-  if (req.user) {
-    next()
-  } else {
-    res.status(401).json({ message: 'You must login first' })
+module.exports.isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
   }
-}
+  res.status(401).json({ message: 'You have to login first' })
+};
