@@ -17,6 +17,10 @@ Auth0Strategy.prototype.authorizationParams = function (options) {
       params.initial_screen = options.initialScreen;
   }
 
+  if (options.returnToTest && typeof options.returnToTest === 'string') {
+      params.returnToTest = options.returnToTest;
+  }
+
   return params;
 }
 
@@ -33,6 +37,7 @@ passport.use(
     },
     async function (req, accessToken, refreshToken, extraParams, profile, cb) {
       try {
+        console.log('entering to passport Use', req.returnTo)
         cb(null, profile)
       /*   const user = { */
       /*     email: profile.emails[0].value, */

@@ -11,15 +11,21 @@ router.get('/', (req, res) => {
 })
 
 router.get(
- '/login',
- passport.authenticate('auth0', {
-   scope: 'openid email profile',
-   failureMessage: 'Cannot login, try again',
-   failureRedirect: 'http://localhost:3000/login/error',
-   successRedirect: 'http://localhost:3000/login/success',
-   successReturnToOrRedirect: 'http://localhost:3000/login/success',
-   initialScreen: 'login'
- })
+  '/login',
+  async (req, res) => {
+    const { returnTo } = req.query
+    console.log('Login Session', req.session)
+    req.returnTo = returnTo
+    const authenticator = passport.authenticate('auth0', {
+      scope: 'openid email profile',
+      failureMessage: 'Cannot login, try again',
+      failureRedirect: 'http://localhost:3000/login/error',
+      successRedirect: 'http://localhost:3000/login/success',
+      successReturnToOrRedirect: 'http://localhost:3000/login/success',
+      initialScreen: 'login',
+    })
+    authenticator(req, res)
+  }
 )
 
 router.get(
@@ -43,22 +49,27 @@ router.get(
 
 
 router.get(
- '/callback',
- passport.authenticate('auth0', {
-   scope: 'openid email profile',
-   failureMessage: 'Cannot login, try again',
-   failureRedirect: 'http://localhost:3000/login/error',
-   successRedirect: 'http://localhost:3000/login/success',
-   successReturnToOrRedirect: 'http://localhost:3000/login/success',
-   initialScreen: 'login'
- }),
- async (req, res) => {
-   try {
-     res.status(204).json({ message: 'Login succesfully', user: req.user })
-   } catch (error) {
-     console.log('error Callback', error)
-   }
- }
+  '/callback',
+  async (req, res) => {
+    console.log('session', req.session)
+
+    const returnTo = req.headers.referer ? req.headers.referer : 'http://localhost:3000/'
+    const authenticator = passport.authenticate('auth0', {
+      scope: 'openid email profile',
+      failureMessage: 'Cannot login, try again',
+      failureRedirect: `${returnTo}login/error`,
+      successRedirect: `${returnTo}login/success`,
+      successReturnToOrRedirect: `${returnTo}login/success`,
+    })
+    authenticator(req, res)
+  },
+  async (req, res) => {
+    try {
+      res.status(204).json({ message: 'Login succesfully', user: req.user })
+    } catch (error) {
+      console.log('error Callback', error)
+    }
+  }
 )
 
 router.get('/logout', (req, res) => {
@@ -109,3 +120,7 @@ router.post('/isAuth', isAuthenticated, (req, res) => {
 // })
 
 module.exports = router
+    /* config.internalOptions.failureRedirect = config.extraParams.returnToTest + '/login/error'; */
+/* config.internalOptions.successRedirect = config.extraParams.returnToTest + '/login/success'; */
+/* config.internalOptions.successReturnToOrRedirect = config.extraParams.returnToTest + '/login/success'; */
+/* console.log('after modify', config) */
