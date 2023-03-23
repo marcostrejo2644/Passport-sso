@@ -27,10 +27,21 @@
               placeholder="Password"
             />
           </div>
-          <button class="btn btn-success btn-block">
-            Signin
-          </button>
+          <div class='d-grid'>
+            <button class="btn btn-success btn-block">
+              Signin
+            </button>
+          </div>
         </form>
+
+        <div class="mt-5 d-grid justify-content-center">
+          <span class="text-center mb-2">Sign in with:</span>
+          <a href="/api/v1/auth/loginGoogle" type="button" class="btn btn-light">
+            <i class="fa-brands fa-google "></i> 
+            Google
+          </a>
+        </div>
+        <div ></div>
       </div>
 
       <p class="text-center">Don't Have an Account? <a href="/api/v1/auth/signup" class="text-info">Register</a></p>

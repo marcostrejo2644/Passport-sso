@@ -10,6 +10,7 @@ const routes = require('./api/index')
 const mongoConnect = require('./services/mongoDB')
 
 require('./auth/passportLocal')
+require('./auth/passportGoogle')
 
 require('dotenv').config()
 

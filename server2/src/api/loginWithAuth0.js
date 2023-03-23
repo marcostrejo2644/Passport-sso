@@ -90,26 +90,14 @@ router.post('/isAuth', isUserAuthenticate, (req, res) => {
   res.status(200).json({ message: "you are authenticate" })
 })
 
-// From web app example
-// router.get('/callback', (req, res, next) => {
-//   console.log('Callback')
-//   passport.authenticate('auth0', (err, user, info) => {
-//     if (err) {
-//       console.log('exist an error')
-//       return next(err)
-//     }
-//     if (!user) {
-//       return res.redirect('/login')
-//     }
-//     req.logIn(user, (err) => {
-//       if (err) {
-//         return next(err)
-//       }
-//       const returnTo = req.session.returnTo
-//       delete req.session.returnTo
-//       res.redirect(returnTo || '/')
-//     })
-//   })
-// })
+router.get('/loginGoogle', passport.authenticate('google',{
+  scope: ['email', 'profile'],
+  successRedirect: 'http://localhost:3000/login/sucess',
+  failureRedirect: 'http://localhost:3000/login/error'
+}));
 
+router.get('/loginGoogle/callback', async(req, res) => {
+  /* console.log('req', req) */
+  console.log('User?', req.user)
+})
 module.exports = router

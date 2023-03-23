@@ -19,7 +19,7 @@
     "express-session": "^1.17.3",
     "mongoose": "^6.9.1",
     "passport": "^0.6.0",
-    "passport-auth0": "^1.4.3",
+    "passport-google-oidc": "^0.1.0",
     "passport-local": "^1.0.0",
     "pug": "^3.0.2"
   },
